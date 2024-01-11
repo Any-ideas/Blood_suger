@@ -44,9 +44,9 @@ def user_select():
         #if res == 0:
         response_data = {
             'code': 0,
-            'message': '登录成功',
-            'user_id': f'{id}',  # 替换为实际用户ID
-            'userAccount': f'{userAccount}',  # 替换为实际用户名
+            'message': 'Login Successful',
+            'user_id': f'{id}',  # Replace with the actual user ID
+            'userAccount': f'{userAccount}',  # Replace with the actual user account
             'gender': f'{gender}',
             'userName': f'{userName}',
             'email': f'{email}',
@@ -61,8 +61,8 @@ def user_select():
         response_data = {
             'code': 1,
             'message': '登录失败',
-            'user_id': 'NULL',  # 替换为实际用户ID
-            'userAccount': f'{userAccount}'  # 替换为实际用户名
+            'user_id': 'NULL',  # Replace with the actual user ID"
+            'userAccount': f'{userAccount}'  # Replace with the actual user account
         }
         print(response_data)
         return response_data
@@ -78,13 +78,13 @@ def user_register():
     if res == 0:
         response_data = {
             'code': 0,
-            'message': '注册成功',
+            'message': 'Registration Successful',
         }
         return response_data
     else:
         response_data = {
             'code': 1,
-            'message': '注册失败',
+            'message': 'Registration Failed',
         }
         return response_data
 
@@ -104,12 +104,12 @@ def add_task():
     try:
         sql = "INSERT INTO post (title, content, userId, createTime) VALUES (%s, %s, %s, %s)"
         mysql_connect.execute_sql(sql, (title, content, user_id, current_time))
-        return jsonify({"code": 0, "message": "添加任务成功"})
+        return jsonify({"code": 0, "message": "Task Added Successfully"})
     except Exception as e:
         print(e)
         return jsonify({"code": 1, "message": str(e)})
 
-# 删除任务接口
+# Delete Task Interface
 @api.route('/api/post/delete', methods=['POST'])
 def delete_task():
     data = request.get_json()
@@ -118,7 +118,7 @@ def delete_task():
     try:
         sql = "DELETE FROM post WHERE id = %s"
         mysql_connect.execute_sql(sql, (post_id,))
-        return jsonify({"code": 0, "message": "删除任务成功"})
+        return jsonify({"code": 0, "message": "Task Deleted Successfully"})
     except Exception as e:
         return jsonify({"code": 1, "message": str(e)})
 
@@ -132,7 +132,7 @@ def update_task():
     try:
         sql = "UPDATE post SET title = %s, content = %s WHERE id = %s"
         mysql_connect.execute_sql(sql, (title, content, post_id))
-        return jsonify({"code": 0, "message": "修改任务成功"})
+        return jsonify({"code": 0, "message": "Task Updated Successfully"})
     except Exception as e:
         return jsonify({"code": 1, "message": str(e)})
 
@@ -188,7 +188,7 @@ def get_daydata_by_user_id():
     except Exception as e:
         return jsonify({"code": 1, "message": str(e)})
 
-# 添加记录接口
+# Add Record Interface
 @api.route('/api/daydata/add', methods=['POST'])
 def add_daydata():
     data = request.get_json()
@@ -200,11 +200,11 @@ def add_daydata():
     try:
         sql = "INSERT INTO daydata (title, content, userId, createTime) VALUES (%s, %s, %s, %s)"
         mysql_connect.execute_sql(sql, (title, content, user_id, current_time))
-        return jsonify({"code": 0, "message": "添加记录成功"})
+        return jsonify({"code": 0, "message": "Record Added Successfully"})
     except Exception as e:
         return jsonify({"code": 1, "message": str(e)})
 
-# 删除记录接口
+# Delete Record Interface
 @api.route('/api/daydata/delete', methods=['POST'])
 def delete_daydata():
     data = request.get_json()
@@ -213,11 +213,11 @@ def delete_daydata():
     try:
         sql = "DELETE FROM daydata WHERE id = %s"
         mysql_connect.execute_sql(sql, (daydata_id,))
-        return jsonify({"code": 0, "message": "删除记录成功"})
+        return jsonify({"code": 0, "message": "Record Deleted Successfully"})
     except Exception as e:
         return jsonify({"code": 1, "message": str(e)})
 
-# 修改记录接口
+# Update Record Interface
 @api.route('/api/daydata/update', methods=['POST'])
 def update_daydata():
     data = request.get_json()
@@ -228,7 +228,7 @@ def update_daydata():
     try:
         sql = "UPDATE daydata SET title = %s, content = %s WHERE id = %s"
         mysql_connect.execute_sql(sql, (title, content, daydata_id))
-        return jsonify({"code": 0, "message": "修改记录成功"})
+        return jsonify({"code": 0, "message": "Record Updated Successfully"})
     except Exception as e:
         return jsonify({"code": 1, "message": str(e)})
 
@@ -236,13 +236,13 @@ def update_daydata():
 @api.route('/api/user/update', methods=['POST'])
 def update_user():
     try:
-        # 获取请求中的用户信息
+        # Retrieve User Information from the Request
         data = request.get_json()
         print(data)
-        # 更新用户信息的 SQL 语句
+        # SQL statement to update user information
         sql = "UPDATE user SET address=%s, email=%s, gender=%s, idCardNumber=%s, phoneNumber=%s,postalCode=%s, userName=%s WHERE id=%s"
 
-        # 执行 SQL 语句
+        # Execute SQL Statement
         mysql_connect.execute_sql(sql, (
             data['address'],
             data['email'],
@@ -254,10 +254,10 @@ def update_user():
             data['id']
         ))
 
-        # 返回成功响应
-        return jsonify({'code': 0, 'message': '更新成功','data':data})
+        # Return a Successful Response
+        return jsonify({'code': 0, 'message': 'Update Successful','data':data})
     except Exception as e:
-        return jsonify({'code': 1, 'message': f'更新失败: {str(e)}'})
+        return jsonify({'code': 1, 'message': f'Update Failed: {str(e)}'})
 
 
 if __name__ == '__main__':
