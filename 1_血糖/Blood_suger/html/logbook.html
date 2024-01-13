@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,10 +18,10 @@
         <nav>
             <div class="nav-left">
                 <ul>
-                    <li><a href="index.html">Home Page</a></li>
-                    <li><a href="logbook.html">Logbook</a></li>
-                    <li><a href="trends.html">Trends</a></li>
-                    <li><a href="settings.html">Settings</a></li>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="logbook.html">血糖记录</a></li>
+                    <li><a href="trends.html">血糖趋势</a></li>
+                    <li><a href="settings.html">个人信息</a></li>
 
                 </ul>
             </div>
@@ -30,28 +30,28 @@
                     <li><span style="line-height: 37px">{{ userAccount }}</span></li>
                 </ul>
                 <ul v-else>
-                    <!-- Render login/register link -->
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
+                    <!-- 渲染登录/注册链接 -->
+                    <li><a href="login.html">登录</a></li>
+                    <li><a href="register.html">注册</a></li>
                 </ul>
             </div>
         </nav>
     </header>
     <div class="add-activity-button-container">
-        <el-button @click="openModal()">Add activity</el-button>
+        <el-button @click="openModal()">添加记录</el-button>
     </div>
 
     <main>
         <el-table :data="daydatas" class="table" style="width: 90%" stripe border>
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
-            <el-table-column prop="createTime" label="Date" :formatter="formatDate" width="180"></el-table-column>
-            <el-table-column prop="title" label="Title"></el-table-column>
-            <el-table-column prop="content" label="Content"></el-table-column>
-            <el-table-column prop="createTime" label="RecordTime" :formatter="formatTime"></el-table-column>
-            <el-table-column label="Action">
+            <el-table-column prop="createTime" label="日期" :formatter="formatDate" width="180"></el-table-column>
+            <el-table-column prop="title" label="名称"></el-table-column>
+            <el-table-column prop="content" label="数值"></el-table-column>
+            <el-table-column prop="createTime" label="记录时间" :formatter="formatTime"></el-table-column>
+            <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="deleteRecord(scope.row.id)">Delete</el-button>
-                    <el-button type="text" @click="openModal(scope.row.id)">Update</el-button>
+                    <el-button type="text" @click="deleteRecord(scope.row.id)">删除</el-button>
+                    <el-button type="text" @click="openModal(scope.row.id)">修改</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -60,31 +60,28 @@
 
     <el-dialog
             :visible.sync="isModalOpen"
-            title="Add records"
+            title="添加记录"
             width="30%"
             :before-close="closeModal">
-            <el-form ref="taskForm" :model="taskForm" label-width="80px">
-                <el-form-item label="Title" prop="title">
-                    <el-select v-model="taskForm.title" placeholder="Please Select">
-                        <el-option label="BloodSugar" value="BloodSugar"></el-option>
-                        <el-option label="Carbs" value="Carbs"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="Content" prop="content">
-                    <el-input type="textarea" v-model="taskForm.content" placeholder="Please enter your content"></el-input>
-                </el-form-item>
-            </el-form>
+        <el-form ref="taskForm" :model="taskForm" label-width="80px">
+            <el-form-item label="名称" prop="title">
+                <el-input v-model="taskForm.title" placeholder="请输入名称，如：血糖"></el-input>
+            </el-form-item>
+            <el-form-item label="数值" prop="content">
+                <el-input type="textarea" v-model="taskForm.content" placeholder="请输入值，如：100mg/dL"></el-input>
+            </el-form-item>
+        </el-form>
 
         <span slot="footer" class="dialog-footer">
-            <el-button @click="closeModal">Cancel</el-button>
+            <el-button @click="closeModal">取消</el-button>
             <el-button type="primary" @click="taskForm.id ? updateTask() : createTask()">
-                {{ taskForm.id ? 'Update record' : 'Add record' }}
+                {{ taskForm.id ? '修改记录' : '创建记录' }}
             </el-button>
         </span>
     </el-dialog>
 
     <footer>
-        <p>@2024, BloodSugar system</p>
+        <p>@2024，血糖系统</p>
     </footer>
 </div>
 
@@ -117,12 +114,12 @@
         },
         methods: {
             formatDate(row) {
-                // Format Date
-                return moment(row.createTime).format('YYYY-MM-DD');
+                // 格式化日期
+                return moment(row.createTime).format('YYYY年MM月DD日');
             },
             formatTime(row) {
-                // Format Time
-                return moment(row.createTime).format('HH:mm:ss');
+                // 格式化时间
+                return moment(row.createTime).format('HH时mm分ss秒');
             },
             openModal(dadataId) {
                 this.isModalOpen = true;
@@ -149,17 +146,17 @@
                     .then(response => {
                         const responseData = response.data;
                         if (responseData.code === 0) {
-                            console.log("Creation Successful", response.data);
+                            console.log("添加成功", response.data);
                             this.getAll();
                             this.isModalOpen = false;
-                            this.taskForm.title = 'Creation Successful';
+                            this.taskForm.title = '';
                             this.taskForm.content = '';
                         } else {
                             alert(responseData.message);
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
 
             },
@@ -172,7 +169,7 @@
                     .then(response => {
                         const responseData = response.data;
                         if (responseData.code === 0) {
-                            console.log("Update Successful", response.data);
+                            console.log("修改成功", response.data);
                             this.getAll();
                             this.isModalOpen = false;
                             this.taskForm.id = '';
@@ -183,13 +180,13 @@
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
             },
             closeModal() {
-                this.$confirm('Are you sure you want to cancel?', 'Alert', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
+                this.$confirm('确定要取消吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
                     type: 'info'
                 }).then(() => {
                     this.isModalOpen = false;
@@ -210,25 +207,25 @@
                         } else if (typeof response.data.data === 'object') {
                             this.daydatas = Object.values(response.data.data);
                         } else {
-                            console.error("Unsupported Data Type: ", response.data.data);
+                            console.error("不支持的数据类型:", response.data.data);
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
             },
             deleteRecord(id) {
-                if (window.confirm('Are you sure you want to delete this task?')) {
+                if (window.confirm('确定删除吗？')) {
                     axios.post('http://127.0.0.1:8080/api/daydata/delete', { id: id })
                         .then(response => {
                             if (response.data) {
                                 this.getAll();
                             } else {
-                                console.error('Deletion failed, no valid data returned');
+                                console.error('删除失败，未返回有效数据');
                             }
                         })
                         .catch(error => {
-                            console.error('An error occured while deleting: ：', error);
+                            console.error('删除记录时出错：', error);
                         });
                 }},
         },

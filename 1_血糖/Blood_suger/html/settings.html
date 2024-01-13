@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Detail</title>
-    <link rel="stylesheet" href="settingstyle.css">
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="./settingstyle.css">
+    <link rel="stylesheet" type="text/css" href="./index.css">
+    <link rel="stylesheet" type="text/css" href="./styles.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://fastly.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/vue@2"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
@@ -18,10 +18,10 @@
         <nav>
             <div class="nav-left">
                 <ul>
-                    <li><a href="index.html">Home Page</a></li>
-                    <li><a href="logbook.html">Logbook</a></li>
-                    <li><a href="trends.html">Trends</a></li>
-                    <li><a href="settings.html">Settings</a></li>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="logbook.html">血糖记录</a></li>
+                    <li><a href="trends.html">血糖趋势</a></li>
+                    <li><a href="settings.html">个人信息</a></li>
                 </ul>
             </div>
             <div class="nav-right">
@@ -30,54 +30,48 @@
                 </ul>
                 <ul v-else>
                     <!-- 渲染登录/注册链接 -->
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
+                    <li><a href="login.html">登录</a></li>
+                    <li><a href="register.html">注册</a></li>
                 </ul>
             </div>
         </nav>
     </header>
     <el-card class="box-card">
         <div slot="header" class="clearfix">
-            <span>Settings</span>
-            <el-button @click="editMode = !editMode">{{ editMode ? 'Edit' : 'Cancel' }}</el-button>
-            <el-button @click="saveChanges" v-if="!editMode">Save</el-button>
+            <span>个人信息</span>
+            <el-button @click="editMode = !editMode">{{ editMode ? '编辑' : '取消编辑' }}</el-button>
+            <el-button @click="saveChanges" v-if="!editMode">保存</el-button>
         </div>
         <div>
             <el-form ref="userForm" :model="currentUser" :rules="rules" label-width="80px">
-                <el-form-item label="Name">
+                <el-form-item label="名称">
                     <el-input v-model="currentUser.userName" :disabled="editMode"></el-input>
                 </el-form-item>
-                <el-form-item label="Gender">
+                <el-form-item label="性别">
                     <el-select v-model="selectedGender" :disabled="editMode">
-                        <el-option label="Male" value="1"></el-option>
-                        <el-option label="Female" value="2"></el-option>
+                        <el-option label="男" value="1"></el-option>
+                        <el-option label="女" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="Email">
+                <el-form-item label="邮箱">
                     <el-input v-model="currentUser.email" :disabled="editMode"></el-input>
                 </el-form-item>
-                <el-form-item label="PhoneNumber">
+                <el-form-item label="电话号码">
                     <el-input v-model="currentUser.phoneNumber" :disabled="editMode"></el-input>
                 </el-form-item>
-                <el-form-item label="Diabete Type">
-                    <el-select v-model="currentUser.idCardNumber" :disabled="editMode">
-                        <el-option label="I" value="1"></el-option>
-                        <el-option label="II" value="2"></el-option>
-                    </el-select>
-                </el-form-item>
-                <!-- <el-form-item label="Insulin Type">
-                    <el-select v-model="selectedGender" :disabled="editMode">
-                        <el-option label="Long Term" value="5"></el-option>
-                        <el-option label="Short Term" value="6"></el-option>
-                    </el-select> -->
-                <!-- </el-form-item>
-                <el-form-item label="Injection Type">
+                <el-form-item label="糖尿病类">
                     <el-input v-model="currentUser.idCardNumber" :disabled="editMode"></el-input>
-                </el-form-item> -->
-                <el-form-item label="Post Code">
+                </el-form-item>
+                <el-form-item label="胰岛素类">
+                    <el-input v-model="currentUser.idCardNumber" :disabled="editMode"></el-input>
+                </el-form-item>
+                <el-form-item label="注射方式">
+                    <el-input v-model="currentUser.idCardNumber" :disabled="editMode"></el-input>
+                </el-form-item>
+                <el-form-item label="邮编">
                     <el-input v-model="currentUser.postalCode" :disabled="editMode"></el-input>
                 </el-form-item>
-                <el-form-item label="Address">
+                <el-form-item label="地址">
                     <el-input v-model="currentUser.address" :disabled="editMode"></el-input>
                 </el-form-item>
             </el-form>
@@ -95,13 +89,13 @@
                 editMode: true,
                 selectedGender: '',
                 rules: {
-                    address: [{ required: true, message: 'Enter your address', trigger: 'blur' }],
-                    email: [{ required: true, message: 'Enter your email', trigger: 'blur' }],
-                    gender: [{ required: true, message: 'Chosse your gender', trigger: 'blur' }],
-                    idCardNumber: [{ required: true, message: 'Please choose your diabete type', trigger: 'blur' }],
-                    phoneNumber: [{ required: true, message: 'Enter your phone number', trigger: 'blur' }],
-                    postalCode: [{ required: true, message: 'Enter your post code', trigger: 'blur' }],
-                    userName: [{ required: true, message: 'Enter your name', trigger: 'blur' }],
+                    address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+                    email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+                    gender: [{ required: true, message: '请输入性别', trigger: 'blur' }],
+                    idCardNumber: [{ required: true, message: '糖尿病类', trigger: 'blur' }],
+                    phoneNumber: [{ required: true, message: '请输入电话号码', trigger: 'blur' }],
+                    postalCode: [{ required: true, message: '请输入邮编', trigger: 'blur' }],
+                    userName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
                 }
             }
         },
@@ -127,7 +121,7 @@
                     .then(response => {
                         const responseData = response.data;
                         if (responseData.code === 0) {
-                            console.log("Update Successful", response.data.data.gender);
+                            console.log("修改成功", response.data.data.gender);
                             this.useMes.gender = response.data.data.gender;
                             localStorage.setItem('userMes', JSON.stringify(this.useMes));
                             this.editMode = true;
@@ -136,7 +130,7 @@
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
             }
         },

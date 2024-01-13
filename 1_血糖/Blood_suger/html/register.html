@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>注册</title>
     <link rel="stylesheet" href="./loginstyles.css">
     <script src="https://fastly.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://fastly.jsdelivr.net/npm/vue@2"></script>
@@ -11,25 +11,25 @@
 <body>
 <div id="app" class="container" v-cloak>
     <div class="logo-section">
-        <img src="path.webp" alt="Dialog Logo">
+        <img src="path.webp" alt="糖尿病日记 Logo">
     </div>
     <div class="login-section">
         <form @submit.prevent="submitLoginForm">
-            <h1>Welcome</h1>
+            <h1>欢迎注册</h1>
             <div class="form-group">
-                <label for="account">Account</label>
+                <label for="account">帐号</label>
                 <input type="text" v-model="account" id="account" name="account" pattern="[a-zA-Z0-9]{4,}" title="帐号必须包含至少4个字母或数字">
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">密码</label>
                 <input type="password" v-model="password" id="password" name="password" pattern=".{8,}" title="密码长度必须至少为8个字符">
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Confrim Password</label>
+                <label for="confirmPassword">确认密码</label>
                 <input type="password" v-model="confirmPassword" id="confirmPassword" name="confirmPassword" pattern=".{8,}" title="密码长度必须至少为8个字符">
             </div>
-            <button type="submit">Register</button>
-            <a href="login.html">&nbsp;Already have an account? click here to login</a>
+            <button type="submit">注册</button>
+            <a href="login.html">&nbsp;已有账号？点我登录</a>
         </form>
     </div>
 </div>
@@ -45,7 +45,7 @@
         methods: {
             submitLoginForm() {
                 if (this.password !== this.confirmPassword) {
-                    alert('Passwords your entered are not the same');
+                    alert('两次输入密码不一致');
                     return;
                 }
 
@@ -58,14 +58,14 @@
                     .then(response => {
                         const responseData = response.data;
                         if (responseData.code === 0) {
-                            console.log("Registration Successful", response.data);
+                            console.log("注册成功", response.data);
                             window.location.href = "login.html";
                         } else {
                             alert(responseData.message);
                         }
                     })
                     .catch(error => {
-                        console.error("Registration Failed ", error);
+                        console.error("注册失败", error);
                     });
             }
         }

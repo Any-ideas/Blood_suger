@@ -1,0 +1,67 @@
+/*
+MySQL Backup
+Database: blood_suger
+Backup Time: 2024-01-08 18:01:20
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS `blood_suger`.`daydata`;
+DROP TABLE IF EXISTS `blood_suger`.`post`;
+DROP TABLE IF EXISTS `blood_suger`.`user`;
+CREATE TABLE `daydata` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `content` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL COMMENT 'Ã¥Ë†â€ºÃ¥Â»ÂºÃ§â€Â¨Ã¦Ë†Â· id',
+  `createTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Ã¥Ë†â€ºÃ¥Â»ÂºÃ¦â€”Â¶Ã©â€”Â´',
+  `updateTime` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ã¦â€ºÂ´Ã¦â€“Â°Ã¦â€”Â¶Ã©â€”Â´',
+  `isDelete` tinyint(4) DEFAULT '0' COMMENT 'Ã¦ËœÂ¯Ã¥ÂÂ¦Ã¥Ë†Â Ã©â„¢Â¤',
+  `title` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='Ã¥Â¸â€“Ã¥Â­Â';
+CREATE TABLE `post` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `content` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT 'Ã¥â€ â€¦Ã¥Â®Â¹',
+  `userId` bigint(20) DEFAULT NULL COMMENT 'Ã¥Ë†â€ºÃ¥Â»ÂºÃ§â€Â¨Ã¦Ë†Â· id',
+  `createTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Ã¥Ë†â€ºÃ¥Â»ÂºÃ¦â€”Â¶Ã©â€”Â´',
+  `updateTime` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ã¦â€ºÂ´Ã¦â€“Â°Ã¦â€”Â¶Ã©â€”Â´',
+  `isDelete` tinyint(4) DEFAULT '0' COMMENT 'Ã¦ËœÂ¯Ã¥ÂÂ¦Ã¥Ë†Â Ã©â„¢Â¤',
+  `title` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='Ã¥Â¸â€“Ã¥Â­Â';
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `userName` varchar(256) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT 'Ã§â€Â¨Ã¦Ë†Â·Ã¦ËœÂµÃ§Â§Â°',
+  `userAccount` varchar(256) NOT NULL COMMENT 'Ã¨Â´Â¦Ã¥ÂÂ·',
+  `userAvatar` varchar(1024) DEFAULT NULL COMMENT 'Ã§â€Â¨Ã¦Ë†Â·Ã¥Â¤Â´Ã¥Æ’Â',
+  `gender` char(1) DEFAULT NULL COMMENT 'Ã¦â‚¬Â§Ã¥Ë†Â«',
+  `userRole` varchar(256) DEFAULT 'user' COMMENT 'Ã§â€Â¨Ã¦Ë†Â·Ã¨Â§â€™Ã¨â€°Â²Ã¯Â¼Å¡user / admin',
+  `userPassword` varchar(512) NOT NULL COMMENT 'Ã¥Â¯â€ Ã§Â Â',
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Ã¥Ë†â€ºÃ¥Â»ÂºÃ¦â€”Â¶Ã©â€”Â´',
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ã¦â€ºÂ´Ã¦â€“Â°Ã¦â€”Â¶Ã©â€”Â´',
+  `isDelete` tinyint(4) DEFAULT '0' COMMENT 'Ã¦ËœÂ¯Ã¥ÂÂ¦Ã¥Ë†Â Ã©â„¢Â¤',
+  `email` varchar(256) DEFAULT NULL COMMENT 'Ã©â€šÂ®Ã§Â®Â±',
+  `phoneNumber` varchar(20) DEFAULT NULL COMMENT 'Ã¦â€°â€¹Ã¦Å“ÂºÃ¥ÂÂ·',
+  `address` varchar(512) DEFAULT NULL COMMENT 'Ã¥Å“Â°Ã¥Ââ‚¬',
+  `postalCode` varchar(20) DEFAULT NULL COMMENT 'Ã©â€šÂ®Ã§Â¼â€“',
+  `idCardNumber` varchar(20) DEFAULT NULL COMMENT 'Ã¨ÂºÂ«Ã¤Â»Â½Ã¨Â¯ÂÃ¥ÂÂ·',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uni_userAccount` (`userAccount`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='Ã§â€Â¨Ã¦Ë†Â·';
+BEGIN;
+LOCK TABLES `blood_suger`.`daydata` WRITE;
+DELETE FROM `blood_suger`.`daydata`;
+INSERT INTO `blood_suger`.`daydata` (`id`,`content`,`userId`,`createTime`,`updateTime`,`isDelete`,`title`) VALUES (37, '100mg/dL', 1, '2024-01-07 15:42:24', '2024-01-07 07:52:44', 0, '血糖'),(38, '90mg/dL', 1, '2024-01-07 15:52:57', '2024-01-07 07:52:57', 0, '血糖'),(39, '100mg/dL', 16, '2024-01-07 17:49:11', '2024-01-07 09:49:11', 0, '血糖'),(40, '90mg/dL', 16, '2024-01-07 17:49:25', '2024-01-07 09:49:24', 0, '血糖'),(41, '85mg/dL', 1, '2024-01-07 19:46:32', '2024-01-07 11:46:38', 0, '血糖'),(42, '125mg/dL', 1, '2024-01-07 20:47:37', '2024-01-07 12:47:46', 0, '血糖'),(43, '100mg/dl', 17, '2024-01-08 01:10:43', '2024-01-07 17:10:44', 0, '血糖'),(44, '100mg/dl', 17, '2024-01-08 01:10:59', '2024-01-07 17:10:59', 0, 'blood sugar'),(45, '123', 1, '2024-01-08 01:13:04', '2024-01-07 17:13:04', 0, 'test'),(46, '110', 18, '2024-01-08 01:45:38', '2024-01-07 17:46:56', 0, '测试'),(47, '120', 18, '2024-01-08 01:45:50', '2024-01-07 17:47:00', 0, 'test'),(48, '100', 18, '2024-01-08 01:46:42', '2024-01-07 17:46:42', 0, 'test'),(49, '222', 1, '2024-01-08 01:47:12', '2024-01-07 17:47:12', 0, 'test'),(50, '10', 19, '2024-01-08 02:02:41', '2024-01-07 18:02:41', 0, 'dc'),(51, '', 19, '2024-01-08 02:02:42', '2024-01-07 18:02:42', 0, ''),(52, 'cd', 19, '2024-01-08 02:08:04', '2024-01-07 18:08:04', 0, 'dcd');
+UNLOCK TABLES;
+COMMIT;
+BEGIN;
+LOCK TABLES `blood_suger`.`post` WRITE;
+DELETE FROM `blood_suger`.`post`;
+INSERT INTO `blood_suger`.`post` (`id`,`content`,`userId`,`createTime`,`updateTime`,`isDelete`,`title`) VALUES (17, '123456', 16, '2024-01-07 17:48:50', '2024-01-07 09:48:49', 0, 'test'),(26, '', 1, '2024-01-07 18:05:21', '2024-01-07 18:10:13', 0, 'test1'),(27, 'cdsa', 1, '2024-01-07 18:05:44', '2024-01-07 18:09:22', 0, 'test1');
+UNLOCK TABLES;
+COMMIT;
+BEGIN;
+LOCK TABLES `blood_suger`.`user` WRITE;
+DELETE FROM `blood_suger`.`user`;
+INSERT INTO `blood_suger`.`user` (`id`,`userName`,`userAccount`,`userAvatar`,`gender`,`userRole`,`userPassword`,`createTime`,`updateTime`,`isDelete`,`email`,`phoneNumber`,`address`,`postalCode`,`idCardNumber`) VALUES (1, '', 'admin', NULL, '1', 'user', '12345678', '2023-12-21 13:35:18', '2024-01-08 09:56:56', 0, 'tywentw@163.com', '1231231231123', '123123123123123123123123123123123123123123', 'bbbbbb', '100000000000000000'),(15, NULL, 'test', NULL, '2', 'user', '123456', '2024-01-07 09:21:46', '2024-01-08 09:47:41', 0, '123@qq.com', NULL, NULL, NULL, NULL),(16, NULL, 'root', NULL, NULL, 'user', '12345678', '2024-01-07 17:48:10', '2024-01-08 09:57:18', 0, '1238@qq.com', NULL, NULL, NULL, NULL),(17, NULL, '123123', NULL, NULL, 'user', '123123123', '2024-01-08 01:10:14', '2024-01-08 01:10:14', 0, NULL, NULL, NULL, NULL, NULL),(18, 'test', 'test123', NULL, '1', 'user', '12345678', '2024-01-08 01:44:57', '2024-01-07 17:46:31', 0, 'None', 'None', 'None', 'None', 'None'),(19, 'dsc', 'xiaominghan', NULL, '2', 'user', 'xiaominghan', '2024-01-08 02:01:58', '2024-01-07 18:03:12', 0, 'Nacds', 'Noncdsa', 'Nonedac', 'Nonecdsa', 'Nonecdsaadcsddd'),(20, NULL, 'jack2024', NULL, NULL, 'user', '12345678', '2024-01-08 02:02:57', '2024-01-08 02:02:57', 0, NULL, NULL, NULL, NULL, NULL);
+UNLOCK TABLES;
+COMMIT;

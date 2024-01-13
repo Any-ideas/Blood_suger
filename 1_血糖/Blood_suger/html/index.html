@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>首页</title>
     <link rel="stylesheet" type="text/css" href="./index.css">
     <link rel="stylesheet" type="text/css" href="./styles.css">
+    <!--  这个地方最好用本地的，从远程下载下来，不要直接在项目中走远程  -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="https://fastly.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://fastly.jsdelivr.net/npm/vue@2"></script>
@@ -17,10 +18,10 @@
         <nav>
             <div class="nav-left">
                 <ul>
-                    <li><a href="index.html">Home Page</a></li>
-                    <li><a href="logbook.html">Logbook</a></li>
-                    <li><a href="trends.html">Trends</a></li>
-                    <li><a href="settings.html">Settings</a></li>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="logbook.html">血糖记录</a></li>
+                    <li><a href="trends.html">血糖趋势</a></li>
+                    <li><a href="settings.html">个人信息</a></li>
                 </ul>
             </div>
             <div class="nav-right">
@@ -29,49 +30,21 @@
                 </ul>
                 <ul v-else>
                     <!-- 渲染登录/注册链接 -->
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
+                    <li><a href="login.html">登录</a></li>
+                    <li><a href="register.html">注册</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <div class="add-activity-button-container">
-        <el-button @click="openModal()">Add Activity</el-button>
-    </div>
-    <el-dialog
-            :visible.sync="isModalOpen"
-            title="Add Activity"
-            width="30%"
-            :before-close="closeModal">
-        <el-form ref="taskForm" :model="taskForm" label-width="80px">
-            <el-form-item label="Activity Title" prop="title">
-                <el-input v-model="taskForm.title" placeholder="Please enter your activity title"></el-input>
-            </el-form-item>
-            <el-form-item label="Activity Content" prop="content">
-                <el-input type="textarea" v-model="taskForm.content" placeholder="Please enter your activity content"></el-input>
-            </el-form-item>
-            <el-form-item label="Email Notification">
-                <el-checkbox v-model="taskForm.emailNotification">Check Email Notifications</el-checkbox>
-            </el-form-item>            
-        </el-form>
-
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="closeModal">Cancel</el-button>
-            <el-button type="primary" @click="taskForm.id ? updateTask() : createTask()">
-                {{ taskForm.id ? 'Update Task' : 'Create Task' }}
-            </el-button>
-        </span>
-    </el-dialog>
-
     <main>
         <section id="logbook-entries" v-if="posts.length > 0">
-            <h1>My Taskes</h1>
+            <h1>我的任务</h1>
             <div class="entry normal" v-for="post in posts" :key="post.id">
                 <div class="post-header">
                     <h2 class="post-title">{{ post.title }}</h2>
                     <div>
-                        <span class="post-time">CreateTime：{{ post.createTime }}</span>
+                        <span class="post-time">创建时间：{{ post.createTime }}</span>
                         <div class="delete-flex">
                             <button class="delete-button" @click="deleteTask(post.id)">删除</button>
                             <button class="update-button" @click="openModal(post.id)">修改</button>
@@ -82,13 +55,36 @@
                 <div class="post-content">{{ post.content }}</div>
             </div>
         </section>
-        <p v-else>No Records Found.</p>
+        <p v-else>暂无记录。</p>
     </main>
 
-    
+    <div class="add-activity-button-container">
+        <el-button @click="openModal()">添加任务</el-button>
+    </div>
+    <el-dialog
+            :visible.sync="isModalOpen"
+            title="添加任务"
+            width="30%"
+            :before-close="closeModal">
+        <el-form ref="taskForm" :model="taskForm" label-width="80px">
+            <el-form-item label="任务标题" prop="title">
+                <el-input v-model="taskForm.title" placeholder="请输入任务标题"></el-input>
+            </el-form-item>
+            <el-form-item label="任务内容" prop="content">
+                <el-input type="textarea" v-model="taskForm.content" placeholder="请输入任务内容"></el-input>
+            </el-form-item>
+        </el-form>
+
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="closeModal">取消</el-button>
+            <el-button type="primary" @click="taskForm.id ? updateTask() : createTask()">
+                {{ taskForm.id ? '修改任务' : '创建任务' }}
+            </el-button>
+        </span>
+    </el-dialog>
 
     <footer>
-        <p>@2024，Blood Sugar System</p>
+        <p>@2024，血糖系统</p>
     </footer>
 </div>
 
@@ -111,7 +107,6 @@
                     content: ''
                 },
                 userAccount:null,
-                emailNotification: false,
             }
         },
         created() {
@@ -133,7 +128,6 @@
                         this.taskForm.id = selectedPost.id;
                         this.taskForm.title = selectedPost.title;
                         this.taskForm.content = selectedPost.content;
-                        
                     }
                 } else {
                     // 没有 postId，表示是添加任务
@@ -148,28 +142,22 @@
                     {
                         title: this.taskForm.title,
                         content: this.taskForm.content,
-                        userId: this.useMes.user_id,
-                        emailNotification: this.taskForm.emailNotification
+                        userId: this.useMes.user_id
                     })
                     .then(response => {
                         const responseData = response.data;
                         if (responseData.code === 0) {
-                            console.log("Creation Successful", response.data);
+                            console.log("添加成功", response.data);
                             this.getAll();
                             this.isModalOpen = false;
                             this.taskForm.title = '';
                             this.taskForm.content = '';
-                            this.taskForm.emailNotification = false; 
-                            this.$message({
-                                message: 'Creation Successful',
-                                type: 'success'
-                            });
                         } else {
                             alert(responseData.message);
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
 
             },
@@ -177,36 +165,29 @@
                 axios.post("http://127.0.0.1:8080/api/post/update", {
                     id: this.taskForm.id,
                     title: this.taskForm.title,
-                    content: this.taskForm.content,
-                    emailNotification: this.taskForm.emailNotification
+                    content: this.taskForm.content
                 })
                     .then(response => {
                         const responseData = response.data;
                         if (responseData.code === 0) {
-                            console.log("Update Successful", response.data);
+                            console.log("修改成功", response.data);
                             this.getAll();
                             this.isModalOpen = false;
                             this.taskForm.id = '';
                             this.taskForm.title = '';
                             this.taskForm.content = '';
-                            this.taskForm.emailNotification = false;
-                            this.$message({
-                                message: 'Update Successful',
-                                type: 'success'
-                            });
-                            
                         } else {
                             alert(responseData.message);
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
             },
             closeModal() {
-                this.$confirm('Are you sure you want to cancel?', 'Alert', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
+                this.$confirm('确定要取消吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
                     type: 'info'
                 }).then(() => {
                     this.isModalOpen = false;
@@ -228,17 +209,17 @@
                             // 如果是对象，将其转换为数组
                             this.posts = Object.values(response.data.data);
                         } else {
-                            console.error("Unsupported Data Type: ", response.data.data);
+                            console.error("不支持的数据类型:", response.data.data);
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred while retrieving the data: ", error);
+                        console.error("检索时发生错误:", error);
                     });
             },
             deleteTask(postId) {
-                this.$confirm('Are you sure you want to delete this task?', 'Alert', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
+                this.$confirm('确定要删除该任务吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     // 处理删除任务的逻辑
@@ -246,14 +227,14 @@
                         .then(response => {
                             const responseData = response.data;
                             if (responseData.code === 0) {
-                                console.log("Delete Successful", response.data);
+                                console.log("删除成功", response.data);
                                 this.getAll();
                             } else {
                                 alert(responseData.message);
                             }
                         })
                         .catch(error => {
-                            console.error("An error occured while deleting: ", error);
+                            console.error("删除时发生错误:", error);
                         });
                 }).catch(() => {
                     // 用户取消了删除操作
